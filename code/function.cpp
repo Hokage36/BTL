@@ -85,7 +85,7 @@ bool loadmedia()
 {
 	bool success = true;
 	//Open image of tiles
-	if (!Tiles_image.loadFromFile("res/images/tiles5.jpg"))
+	if (!Tiles_image.loadFromFile("duLieu/images/tiles5.jpg"))
 	{
 		printf("Can't load this image from file!");
 		success = false;
@@ -102,7 +102,7 @@ bool loadmedia()
 		}
 	}
 	//load digits
-	if (!Digits.loadFromFile("res/images/Untitled1.png"))
+	if (!Digits.loadFromFile("duLieu/images/Untitled1.png"))
 	{
 		printf("Fail");
 		success = false;
@@ -119,53 +119,53 @@ bool loadmedia()
 		}
 	}
 	//load easy table
-	if (!easyTable.loadFromFile("res/images/easy.png"))
+	if (!easyTable.loadFromFile("duLieu/images/easy.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
 	//load medium table
-	if (!mediumTable.loadFromFile("res/images/medium.png"))
+	if (!mediumTable.loadFromFile("duLieu/images/medium.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
 	//load hard table
-	if (!hardTable.loadFromFile("res/images/hard.png"))
+	if (!hardTable.loadFromFile("duLieu/images/hard.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
 	//load face
-	if (!winFace.loadFromFile("res/images/winface.png"))
+	if (!winFace.loadFromFile("duLieu/images/winface.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
-	if (!loseFace.loadFromFile("res/images/loseface.png"))
+	if (!loseFace.loadFromFile("duLieu/images/loseface.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
-	if (!playingFace.loadFromFile("res/images/playingface.png"))
+	if (!playingFace.loadFromFile("duLieu/images/playingface.png"))
 	{
 		printf("Fail");
 		success = false;
 	}
-	if (!back.loadFromFile("res/images/backicon.png"))
+	if (!back.loadFromFile("duLieu/images/backicon.png"))
 	{
 		success = false;
 	}
-	if (!sound_on.loadFromFile("res/images/unmute.png"))
+	if (!sound_on.loadFromFile("duLieu/images/unmute.png"))
 	{
 		success = false;
 	}
-	if (!sound_off.loadFromFile("res/images/mute.png"))
+	if (!sound_off.loadFromFile("duLieu/images/mute.png"))
 	{
 		success = false;
 	}
 	//Open the font
-	gFont = TTF_OpenFont("res/font.ttf", 20);
+	gFont = TTF_OpenFont("duLieu/font.ttf", 20);
 	if (gFont == NULL)
 	{
 		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
@@ -193,7 +193,7 @@ bool loadmedia()
 		success = false;
 	}
 	//Load music
-	loseMusic = Mix_LoadMUS("res/audio/scratch.wav");
+	loseMusic = Mix_LoadMUS("duLieu/audio/scratch.wav");
 	if (loseMusic == NULL)
 	{
 		printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -201,14 +201,14 @@ bool loadmedia()
 	}
 
 	//Load sound effects
-	winMusic = Mix_LoadMUS("res/audio/beat.wav");
+	winMusic = Mix_LoadMUS("duLieu/audio/beat.wav");
 	if (winMusic == NULL)
 	{
 		printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
 
-	click = Mix_LoadWAV("res/audio/click.wav");
+	click = Mix_LoadWAV("duLieu/audio/click.wav");
 	if (click == NULL)
 	{
 		printf("Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError());
@@ -221,18 +221,18 @@ bool loadMenuMedia()
 {
 	bool success = true;
 	//load background of menu
-	if (!menuTheme.loadFromFile("res/images/menu.jpg"))
+	if (!menuTheme.loadFromFile("duLieu/images/menu.jpg"))
 	{
 		printf("Fail!");
 		success = false;
 	}
 	//load level choice
-	if (!levelTheme.loadFromFile("res/images/mode.jpg"))
+	if (!levelTheme.loadFromFile("duLieu/images/mode.jpg"))
 	{
 		printf("Fail");
 		success = false;
 	}
-	if (!customStart.loadFromFile("res/images/custom.png"))
+	if (!customStart.loadFromFile("duLieu/images/custom.png"))
 	{
 		printf("Fail");
 		success = true;
@@ -907,9 +907,9 @@ void renderGame()
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 		SDL_RenderClear(renderer);
 		sound_on.render(timeDigit_x - 10, 0);
-		loseMusic = Mix_LoadMUS("res/audio/scratch.wav");
-		winMusic = Mix_LoadMUS("res/audio/beat.wav");
-		click = Mix_LoadWAV("res/audio/click.wav");
+		loseMusic = Mix_LoadMUS("duLieu/audio/scratch.wav");
+		winMusic = Mix_LoadMUS("duLieu/audio/beat.wav");
+		click = Mix_LoadWAV("duLieu/audio/click.wav");
 	}
 	else
 	{
