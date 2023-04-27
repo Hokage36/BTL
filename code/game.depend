@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\buttons.cpp
+	"Variables.h"
+	"constant.h"
+	"Buttons.h"
+	"function.h"
+
+1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\variables.h
+	"Texture.h"
+	"constant.h"
+	"Buttons.h"
+
+1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\texture.h
+	<iostream>
+	<time.h>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<string>
+	<vector>
+
+1681744688 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\constant.h
+	<iostream>
+
+1682179282 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\buttons.h
+	<SDL.h>
+
+1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.h
+	"Timer.h"
+	<SDL.h>
+
+1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\timer.h
+	<SDL.h>
+
+1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.cpp
+	"Texture.h"
+	"Variables.h"
+	"constant.h"
+	"Buttons.h"
+	"function.h"
+	"Timer.h"
+	<sstream>
+	<fstream>
+
+1681663318 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\main.cpp
+	"Texture.h"
+	"Buttons.h"
+	"Variables.h"
+	"constant.h"
+	"function.h"
+
+1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\texture.cpp
+	"Texture.h"
+	"Variables.h"
+
+1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\timer.cpp
+	"Timer.h"
+
+1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\variables.cpp
+	"Variables.h"
+	<iostream>
+
