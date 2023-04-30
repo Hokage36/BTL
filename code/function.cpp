@@ -4,8 +4,7 @@
 #include "Buttons.h"
 #include "function.h"
 #include "Timer.h"
-#include <sstream>
-#include <fstream>
+
 using namespace std;
 vector <vector<LButton> > Buttons(3, vector<LButton>(2));
 LButton face;
@@ -760,46 +759,13 @@ void GameManager()
 	{
 		timer.pause();
 		winFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
-		if (isRunning == false && isWinning) getScore();
+
 	}
 }
-
-std::string getTime()
-{
-	stringstream Time{};
-	if (isWinning == true)
-	{
-		int n = timer.getTicks() / 1000;
-		int h, m, s;
-		h = n / 3600;
-		m = (n - h * 3600) / 60;
-		s = (n - h * 3600 - m * 60);
-		Time.str( "" );
-		Time << h << ":" << m << ":" << s;
-		return Time.str();
-	}
-}
-
-std::string getFileScoreName()
-{
-	stringstream os;
-	os.str( "" );
-	os << "score/" << BOARD_SIZE_X << "x" << BOARD_SIZE_Y << "x" << NumberOfMines<<".txt";
-	return os.str();
-}
-
-void getScore()
-{
-	ofstream outFile;
-	outFile.open(getFileScoreName().c_str(),ios::app);
-	outFile << getTime() << endl;
-	outFile.close();
-}
-
 void PlayAgain()
 {
 	//timer.stop();
-	if(isWinning) getScore();
+
 	timer.start();
 	CreateBoard();
 	Mix_HaltMusic();
@@ -809,7 +775,6 @@ void PlayAgain()
 	lose = false;
 	playAgain = false;
 }
-
 void MineManager()
 {
 	int n = mineCountLeft;
