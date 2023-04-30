@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\buttons.cpp
+1682870102 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\buttons.cpp
 	"Variables.h"
 	"constant.h"
 	"Buttons.h"
@@ -33,7 +33,7 @@
 1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\timer.h
 	<SDL.h>
 
-1682869964 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.cpp
+1682870102 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.cpp
 	"Texture.h"
 	"Variables.h"
 	"constant.h"

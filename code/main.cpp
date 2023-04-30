@@ -6,7 +6,7 @@
 using namespace std;
 
 
-int WinMain(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	//Start up SDL and create window
 	if (!init())
