@@ -80,7 +80,6 @@ extern int NumberOfMines = 0;
 
 // boolean
 extern bool playAgain = false;
-extern bool saveScore = false;
 extern bool start = false;
 extern bool easy = false;
 extern bool medium = false;

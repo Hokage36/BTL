@@ -26,7 +26,7 @@
 1682179282 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\buttons.h
 	<SDL.h>
 
-1681664153 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.h
+1682932139 c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\function.h
 	"Timer.h"
 	<SDL.h>
 
@@ -41,7 +41,7 @@
 	"function.h"
 	"Timer.h"
 
-1681663318 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\main.cpp
+1682871923 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\main.cpp
 	"Texture.h"
 	"Buttons.h"
 	"Variables.h"
@@ -55,7 +55,7 @@
 1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\timer.cpp
 	"Timer.h"
 
-1681664153 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\variables.cpp
+1682932139 source:c:\users\xuan sang\onedrive\máy tính\ahihi\btl\code\variables.cpp
 	"Variables.h"
 	<iostream>
 
