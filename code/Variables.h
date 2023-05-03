@@ -2,7 +2,6 @@
 #pragma once
 #ifndef VARIABLES_H
 #define VARIABLES_H
-
 #include "Texture.h"
 #include "constant.h"
 #include "Buttons.h"
@@ -53,10 +52,12 @@ extern LTexture easyChoice;
 extern LTexture mediumChoice;
 extern LTexture hardChoice;
 extern LTexture customChoice;
+extern LTexture returnChoice;
 extern LTexture easyChoiceColor;
 extern LTexture mediumChoiceColor;
 extern LTexture hardChoiceColor;
 extern LTexture customChoiceColor;
+extern LTexture returnChoiceColor;
 extern LTexture wInput;
 extern LTexture hInput;
 extern LTexture mInput;

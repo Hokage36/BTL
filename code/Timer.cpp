@@ -49,10 +49,10 @@ void LTimer::pause()
 	}
 }
 
-Uint32 LTimer::getTicks()
+unsigned int LTimer::getTicks()
 {
 	//The actual timer time
-	Uint32 time = 0;
+	unsigned int time = 0;
 
 	//If the timer is running
 	if (mStarted)

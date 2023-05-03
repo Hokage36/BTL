@@ -7,12 +7,12 @@ public:
 	void start();
 	void stop();
 	void pause();
-	Uint32 getTicks();
+	unsigned int getTicks();
 	bool isStarted();
 	bool isPaused();
 private:
-	Uint32 mStartTicks;
-	Uint32 mPausedTicks;
+	unsigned int mStartTicks;
+	unsigned int mPausedTicks;
 	bool mPaused;
 	bool mStarted;
 };
