@@ -586,68 +586,6 @@ void CustomMode()
 					}
 				}
 				break;
-			case SDL_KEYDOWN:
-				if (widthInside && e.key.keysym.sym == SDLK_BACKSPACE && width.length() > 0)
-				{
-					width.pop_back();
-					w /= 10;
-					wInput.loadFromRenderedText(width.c_str(), black);
-				}
-				else if (heightInside && e.key.keysym.sym == SDLK_BACKSPACE && height.length() > 0)
-				{
-					height.pop_back();
-					h /= 10;
-					hInput.loadFromRenderedText(height.c_str(), black);
-				}
-				else if (mineInside && e.key.keysym.sym == SDLK_BACKSPACE && mine.length() > 0)
-				{
-					mine.pop_back();
-					m /= 10;
-					mInput.loadFromRenderedText(mine.c_str(), black);
-				}
-				else if (e.key.keysym.sym == SDLK_DOWN)
-				{
-					if (widthInside)
-					{
-						widthInside = false;
-						heightInside = true;
-						mineInside = false;
-					}
-					else if (heightInside)
-					{
-						widthInside = false;
-						heightInside = false;
-						mineInside = true;
-					}
-					else if (mineInside)
-					{
-						widthInside = true;
-						heightInside = false;
-						mineInside = false;
-					}
-				}
-				else if (e.key.keysym.sym == SDLK_UP)
-				{
-					if (widthInside)
-					{
-						widthInside = false;
-						heightInside = false;
-						mineInside = true;
-					}
-					else if (heightInside)
-					{
-						widthInside = true;
-						heightInside = false;
-						mineInside = false;
-					}
-					else if (mineInside)
-					{
-						widthInside = false;
-						heightInside = true;
-						mineInside = false;
-					}
-				}
-				break;
 			default:
 				break;
 			}
