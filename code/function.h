@@ -21,6 +21,7 @@ void setButtonPosition();
 
 //ingame func
 void isPlayerWinning();
+void chordOpen(int i, int j);
 void MineManager();
 void PlayAgain();
 void GameManager();

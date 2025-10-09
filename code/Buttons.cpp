@@ -182,23 +182,43 @@ void LButton::handleEvent(SDL_Event* e)
 				switch (e->button.button)
 				{
 				case SDL_BUTTON_LEFT:
-				{
-					reveal(i, j);
-					if (CountTileLeft == NumberOfMines)
-					{
-						Mix_PlayMusic(winMusic, 1);
-					}
-					if (sBoard[i][j] == 9)
-					{
-						lose = true;
-						Mix_PlayMusic(loseMusic, 1);
-					}
-					else
-					{
-						Mix_PlayChannel(-1, click, 0);
-					}
-					break;
-				}
+                {
+                    // Nếu ô đang đóng (ẩn)
+                    if (sBoard[i][j] == 10)
+                    {
+                        reveal(i, j);
+                        if (CountTileLeft == NumberOfMines)
+                        {
+                            Mix_PlayMusic(winMusic, 1);
+                        }
+                        if (sBoard[i][j] == 9)
+                        {
+                            lose = true;
+                            Mix_PlayMusic(loseMusic, 1);
+                        }
+                        else
+                        {
+                            Mix_PlayChannel(-1, click, 0);
+                        }
+                    }
+                    // Nếu ô đã mở (hiện số 1–8) → kiểm tra “chording”
+                    else if (sBoard[i][j] >= 1 && sBoard[i][j] <= 8)
+                    {
+                        chordOpen(i, j);
+
+                        // Nếu vừa thua khi mở sai, phát nhạc thua
+                        if (lose)
+                        {
+                            Mix_PlayMusic(loseMusic, 1);
+                        }
+                        else
+                        {
+                            Mix_PlayChannel(-1, click, 0);
+                        }
+                    }
+                    break;
+                }
+
 				case SDL_BUTTON_RIGHT:
 				{
 					Mix_PlayChannel(-1, click, 0);

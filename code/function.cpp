@@ -671,6 +671,56 @@ void reveal(int i, int j)
 	}
 }
 
+void chordOpen(int i, int j)
+{
+
+    if (sBoard[i][j] >= 1 && sBoard[i][j] <= 8)
+    {
+        int flagCount = 0;
+
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                int nx = i + x;
+                int ny = j + y;
+                if (nx < 0 || nx >= BOARD_SIZE_X || ny < 0 || ny >= BOARD_SIZE_Y) continue;
+                if (sBoard[nx][ny] == 11) flagCount++;
+            }
+        }
+
+
+        if (flagCount == sBoard[i][j])
+        {
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    int nx = i + x;
+                    int ny = j + y;
+                    if (nx < 0 || nx >= BOARD_SIZE_X || ny < 0 || ny >= BOARD_SIZE_Y) continue;
+
+
+                    if (sBoard[nx][ny] == 10)
+                    {
+
+                        if (board[nx][ny] == 9)
+                        {
+                            lose = true;
+                            return;
+                        }
+
+
+                        reveal(nx, ny);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 void isPlayerWinning()
 {
 	if (CountTileLeft == NumberOfMines) isWinning = true;
