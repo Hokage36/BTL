@@ -183,7 +183,7 @@ void LButton::handleEvent(SDL_Event* e)
 				{
 				case SDL_BUTTON_LEFT:
                 {
-                    // Nếu ô đang đóng (ẩn)
+
                     if (sBoard[i][j] == 10)
                     {
                         reveal(i, j);
@@ -201,12 +201,12 @@ void LButton::handleEvent(SDL_Event* e)
                             Mix_PlayChannel(-1, click, 0);
                         }
                     }
-                    // Nếu ô đã mở (hiện số 1–8) → kiểm tra “chording”
+
                     else if (sBoard[i][j] >= 1 && sBoard[i][j] <= 8)
                     {
                         chordOpen(i, j);
 
-                        // Nếu vừa thua khi mở sai, phát nhạc thua
+
                         if (lose)
                         {
                             Mix_PlayMusic(loseMusic, 1);

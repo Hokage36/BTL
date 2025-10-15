@@ -4,6 +4,8 @@
 #include "Buttons.h"
 #include "function.h"
 #include "Timer.h"
+#include <SDL.h>
+
 
 using namespace std;
 vector <vector<LButton> > Buttons(3, vector<LButton>(2));
