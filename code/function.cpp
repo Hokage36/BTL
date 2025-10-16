@@ -260,6 +260,11 @@ bool loadMenuMedia()
 		printf("Fail");
 		success = false;
 	}
+	if (!aiChoiceColor.loadFromRenderedText("AI MODE", textColor))
+	{
+		printf("Fail");
+		success = false;
+	}
 	SDL_Color textcolor = { 255,0,0 };
 	if (!easyChoiceColor.loadFromRenderedText("EASY MODE", textcolor))
 	{
@@ -277,6 +282,11 @@ bool loadMenuMedia()
 		success = false;
 	}
 	if (!customChoiceColor.loadFromRenderedText("CUSTOM MODE", textcolor))
+	{
+		printf("Fail");
+		success = false;
+	}
+	if (!aiChoiceColor.loadFromRenderedText("AI MODE", textcolor))
 	{
 		printf("Fail");
 		success = false;
@@ -358,6 +368,7 @@ void createModeMenu()
 	mediumChoice.render(300, 200);
 	hardChoice.render(300, 250);
 	customChoice.render(300, 300);
+	aiChoice.render(300, 350);
 }
 
 void showMenu()
@@ -428,6 +439,7 @@ void showModeChoice()
 	bool mediumInside = false;
 	bool hardInside = false;
 	bool customInside = false;
+	bool aiInside = false;
 	SDL_Event event;
 	createModeMenu();
 	while (isChoosing)
@@ -451,6 +463,8 @@ void showModeChoice()
 				else hardInside = false;
 				if (x > 300 && x < 300 + customChoice.getWidth() && y > 300 && y < 300 + customChoice.getHeight()) customInside = true;
 				else customInside = false;
+				if (x > 300 && x < 300 + aiChoice.getWidth() && y > 350 && y < 350 + aiChoice.getHeight()) aiInside = true;
+				else hardInside = false;
 				if (event.type == SDL_MOUSEBUTTONDOWN)
 				{
 					if (event.button.button == SDL_BUTTON_LEFT)
@@ -465,6 +479,7 @@ void showModeChoice()
 							medium = false;
 							hard = false;
 							cus = false;
+							ai = false;
 							SDL_SetWindowSize(window, 294, 436);
 							setGameMode(9, 9, 10, 21, 163, 25, 80, 235, BOARD_SIZE_X, BOARD_SIZE_Y, NumberOfMines, mineCountLeft, CountTileLeft, distance_x, distance_y, digit_x, digit_y, timeDigit_x);
 							CreateBoard();
@@ -479,6 +494,7 @@ void showModeChoice()
 							medium = true;
 							hard = false;
 							cus = false;
+							ai = false;
 							SDL_SetWindowSize(window, 488, 630);
 							setGameMode(16, 16, 40, 21, 163, 25, 80, 430, BOARD_SIZE_X, BOARD_SIZE_Y, NumberOfMines, mineCountLeft, CountTileLeft, distance_x, distance_y, digit_x, digit_y, timeDigit_x);
 							CreateBoard();
@@ -493,6 +509,7 @@ void showModeChoice()
 							medium = false;
 							hard = true;
 							cus = false;
+							ai = false;
 							SDL_SetWindowSize(window, 880, 632);
 							setGameMode(30, 16, 99, 21, 163, 25, 80, 820, BOARD_SIZE_X, BOARD_SIZE_Y, NumberOfMines, mineCountLeft, CountTileLeft, distance_x, distance_y, digit_x, digit_y, timeDigit_x);
 							CreateBoard();
@@ -505,6 +522,7 @@ void showModeChoice()
 							medium = false;
 							hard = false;
 							cus = true;
+							ai = false;
 						}
 					}
 				}
@@ -518,6 +536,8 @@ void showModeChoice()
 					else hardChoice.render(300, 250);
 					if (customInside == true) customChoiceColor.render(300, 300);
 					else customChoice.render(300, 300);
+					if (aiInside == true) aiChoiceColor.render(300, 300);
+					else aiChoice.render(300, 300);
 				}
 			}
 			SDL_RenderPresent(renderer);

@@ -30,6 +30,7 @@ extern LTexture easyTable;
 extern LTexture mediumTable;
 extern LTexture hardTable;
 extern LTexture customStart;
+extern LTexture aiStart;
 extern LTexture back;
 extern LTexture sound_on;
 extern LTexture sound_off;
@@ -52,11 +53,13 @@ extern LTexture easyChoice;
 extern LTexture mediumChoice;
 extern LTexture hardChoice;
 extern LTexture customChoice;
+extern LTexture aiChoice;
 extern LTexture returnChoice;
 extern LTexture easyChoiceColor;
 extern LTexture mediumChoiceColor;
 extern LTexture hardChoiceColor;
 extern LTexture customChoiceColor;
+extern LTexture aiChoiceColor;
 extern LTexture returnChoiceColor;
 extern LTexture wInput;
 extern LTexture hInput;
@@ -101,5 +104,6 @@ extern bool easy;
 extern bool medium;
 extern bool hard;
 extern bool cus;
+extern bool ai;
 
 #endif

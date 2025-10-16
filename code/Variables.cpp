@@ -6,6 +6,7 @@ extern bool showmenu = false;
 extern bool isChoosing = true;
 extern bool mainLoop = true;
 extern bool customMode = false;
+extern bool aiMode = false;
 
 // win or lose
 extern bool isWinning = false;
@@ -40,11 +41,13 @@ extern LTexture easyChoice(NULL, 0, 0);
 extern LTexture mediumChoice(NULL, 0, 0);
 extern LTexture hardChoice(NULL, 0, 0);
 extern LTexture customChoice(NULL, 0, 0);
+extern LTexture aiChoice(NULL, 0, 0);
 extern LTexture returnChoice(NULL, 0, 0);
 extern LTexture easyChoiceColor(NULL, 0, 0);
 extern LTexture mediumChoiceColor(NULL, 0, 0);
 extern LTexture hardChoiceColor(NULL, 0, 0);
 extern LTexture customChoiceColor(NULL, 0, 0);
+extern LTexture aiChoiceColor(NULL, 0, 0);
 extern LTexture returnChoiceColor(NULL, 0, 0);
 extern LTexture wInput(NULL, 0, 0);
 extern LTexture hInput(NULL, 0, 0);
@@ -87,3 +90,4 @@ extern bool easy = false;
 extern bool medium = false;
 extern bool hard = false;
 extern bool cus = false;
+extern bool ai = false;
