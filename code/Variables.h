@@ -6,6 +6,7 @@
 #include "constant.h"
 #include "Buttons.h"
 
+
 // initialization
 extern SDL_Window* window;
 extern SDL_Renderer* renderer;
@@ -16,6 +17,7 @@ extern bool showmenu;
 extern bool isChoosing;
 extern bool mainLoop;
 extern bool customMode;
+extern bool aiMode;
 
 //win or lose
 extern bool isWinning;
@@ -30,7 +32,8 @@ extern LTexture easyTable;
 extern LTexture mediumTable;
 extern LTexture hardTable;
 extern LTexture customStart;
-extern LTexture aiStart;
+extern LTexture aiTable;
+
 extern LTexture back;
 extern LTexture sound_on;
 extern LTexture sound_off;
@@ -65,6 +68,8 @@ extern LTexture wInput;
 extern LTexture hInput;
 extern LTexture mInput;
 extern TTF_Font* gFont;
+
+extern LTexture gTextTexture;
 
 // Create board data
 extern std::vector <std::vector<int> > sBoard;
@@ -105,5 +110,13 @@ extern bool medium;
 extern bool hard;
 extern bool cus;
 extern bool ai;
+
+extern bool isPlayerTurn;
+extern bool isAITurn;
+extern bool aiThinking;
+extern int playerFlags;
+extern int aiFlags;
+extern bool playerHasMoved;
+
 
 #endif

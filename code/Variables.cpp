@@ -22,6 +22,8 @@ extern LTexture levelTheme(NULL, 0, 0);
 extern LTexture easyTable(NULL, 0, 0);
 extern LTexture mediumTable(NULL, 0, 0);
 extern LTexture hardTable(NULL, 0, 0);
+extern LTexture aiTable(NULL, 0, 0);
+
 extern LTexture customStart(NULL, 0, 0);
 extern LTexture back(NULL, 0, 0);
 extern LTexture sound_on(NULL, 0, 0);
@@ -48,10 +50,11 @@ extern LTexture mediumChoiceColor(NULL, 0, 0);
 extern LTexture hardChoiceColor(NULL, 0, 0);
 extern LTexture customChoiceColor(NULL, 0, 0);
 extern LTexture aiChoiceColor(NULL, 0, 0);
-extern LTexture returnChoiceColor(NULL, 0, 0);
+
 extern LTexture wInput(NULL, 0, 0);
 extern LTexture hInput(NULL, 0, 0);
 extern LTexture mInput(NULL, 0, 0);
+
 
 // create board data
 extern std::vector <std::vector<int> > sBoard(3, std::vector<int>(2,0));
@@ -91,3 +94,14 @@ extern bool medium = false;
 extern bool hard = false;
 extern bool cus = false;
 extern bool ai = false;
+
+extern bool isPlayerTurn = true;
+extern bool isAITurn = false;
+extern bool aiThinking = false;
+extern int playerFlags = 0;
+extern int aiFlags = 0;
+extern bool playerHasMoved = false;  // đánh dấu người chơi đã hành động trong lượt chưa
+
+
+
+

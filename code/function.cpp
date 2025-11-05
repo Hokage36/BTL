@@ -4,7 +4,6 @@
 #include "Buttons.h"
 #include "function.h"
 #include "Timer.h"
-#include <SDL.h>
 
 
 using namespace std;
@@ -13,6 +12,7 @@ LButton face;
 LButton goBack;
 LButton sound;
 LTimer timer;
+LTimer turnTimer;
 
 //initialization func
 bool init()
@@ -267,7 +267,7 @@ bool loadMenuMedia()
 		printf("Fail");
 		success = false;
 	}
-	if (!aiChoice.loadFromRenderedText("AI MODE", textColor))
+    if (!aiChoice.loadFromRenderedText("AI MODE", textColor))
 	{
 		printf("Fail");
 		success = false;
@@ -360,6 +360,8 @@ void setButtonPosition()
 	}
 }
 
+// viet lai
+
 void createMenu()
 {
 	menuTheme.render(0, 0);
@@ -446,7 +448,8 @@ void showModeChoice()
 	bool mediumInside = false;
 	bool hardInside = false;
 	bool customInside = false;
-	bool aiInside = false;
+    bool aiInside = false;
+
 	SDL_Event event;
 	createModeMenu();
 	while (isChoosing)
@@ -481,6 +484,7 @@ void showModeChoice()
 							isRunning = true;
 							isChoosing = false;
 							customMode = false;
+							aiMode = false;
 							timer.start();
 							easy = true;
 							medium = false;
@@ -496,6 +500,7 @@ void showModeChoice()
 							isRunning = true;
 							isChoosing = false;
 							customMode = false;
+							aiMode = false;
 							timer.start();
 							easy = false;
 							medium = true;
@@ -511,6 +516,7 @@ void showModeChoice()
 							isRunning = true;
 							isChoosing = false;
 							customMode = false;
+							aiMode = false;
 							timer.start();
 							easy = false;
 							medium = false;
@@ -525,6 +531,7 @@ void showModeChoice()
 						{
 							isChoosing = false;
 							customMode = true;
+							aiMode = false;
 							easy = false;
 							medium = false;
 							hard = false;
@@ -533,6 +540,7 @@ void showModeChoice()
 						}
 						if (aiInside == true)
                         {
+                            // viet lai
 
 							isChoosing = false;
 							customMode = false;
@@ -671,8 +679,76 @@ void AiMode()
     SDL_SetWindowSize(window, 488, 630);
     setGameMode(16, 16, 40, 21, 163, 25, 80, 430, BOARD_SIZE_X, BOARD_SIZE_Y, NumberOfMines, mineCountLeft, CountTileLeft, distance_x, distance_y, digit_x, digit_y, timeDigit_x);
     CreateBoard();
-    
+    isPlayerTurn = true;
+    isAITurn = false;
+    aiThinking = false;
 }
+
+void nextTurn()
+{
+    if (isPlayerTurn) {
+        isPlayerTurn = false;
+        isAITurn = true;
+    } else {
+        isPlayerTurn = true;
+        isAITurn = false;
+    }
+    playerHasMoved = false;
+    turnTimer.startCountdown(8000);
+}
+
+void openRandomCellForAI()
+{
+    int x, y;
+    do {
+        x = rand() % BOARD_SIZE_X;
+        y = rand() % BOARD_SIZE_Y;
+    } while (sBoard[x][y] != 10);
+
+    reveal(x, y);
+    if (board[x][y] == 9) {
+        isWinning = true;
+    }
+}
+
+void checkFinalWinner()
+{
+    int playerFlags = 0, aiFlags = 0;
+
+    for (int i = 0; i < BOARD_SIZE_X; ++i)
+    for (int j = 0; j < BOARD_SIZE_Y; ++j)
+    {
+        if (board[i][j] == 9) { // bom thật
+            if (/* cờ do player đặt */ sBoard[i][j] == 11)
+                playerFlags++;
+            if (/* cờ do AI đặt */ sBoard[i][j] == 11)
+                aiFlags++;
+        }
+    }
+
+    if (playerFlags > aiFlags) {
+        isWinning = true;
+    } else if (aiFlags > playerFlags) {
+        lose = true;
+    }
+}
+
+void aiMakeMove()
+{
+    int x, y;
+    do {
+        x = rand() % BOARD_SIZE_X;
+        y = rand() % BOARD_SIZE_Y;
+    } while (sBoard[x][y] != 10);
+
+    reveal(x, y);
+
+    if (board[x][y] == 9) {
+        isWinning = true;
+
+    }
+}
+
 //ingame func
 void handleEvent()
 {
@@ -687,16 +763,25 @@ void handleEvent()
 			face.handleEventAgain(&e);
 			goBack.handleEventBack(&e);
 			sound.handleEventMute(&e);
+			//viet lai
 			for (int i = 0; i < BOARD_SIZE_X; i++)
 			{
 				for (int j = 0; j < BOARD_SIZE_Y; j++)
 				{
 					Buttons[i][j].handleEvent(&e);
+
+					if (e.type == SDL_MOUSEBUTTONDOWN)
+                    {
+                        playerHasMoved = true;
+                        nextTurn();  // chuyển sang lượt AI & reset timer
+                    }
 				}
 			}
 
 		}
 }
+
+
 
 void reveal(int i, int j)
 {
@@ -779,13 +864,22 @@ void isPlayerWinning()
 	if (CountTileLeft == NumberOfMines) isWinning = true;
 }
 
+/*void isPlayerWinningWithAi()
+{
+    if()
+}*/
+//viet lai quan ly choi voi ai
 void GameManager()
 {
-	if (playAgain == true) PlayAgain();
+
+	if (playAgain == true) {
+            PlayAgain();
+	}
 	//if we lose
 	if (lose == true)
 	{
-		timer.pause();
+	    if(ai == true) {turnTimer.pause();}
+		else timer.pause();
 		loseFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 		for (int i = 0;i < BOARD_SIZE_X;i++)
 		{
@@ -794,20 +888,24 @@ void GameManager()
 				Buttons[i][j].loseRender(i, j);
 			}
 		}
+
 	}
 	//if we win
-	if (isWinning == true)
+	if (isWinning == true )
 	{
-		timer.pause();
+	    if(ai == true) {turnTimer.pause();}
+	    else timer.pause();
 		winFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 
 	}
+
 }
 void PlayAgain()
 {
 	//timer.stop();
-
-	timer.start();
+    if(ai == true) {
+        turnTimer.startCountdown(8000);
+    } else timer.start();
 	CreateBoard();
 	Mix_HaltMusic();
 	mineCountLeft = NumberOfMines;
@@ -874,6 +972,7 @@ void TimeManager(bool isCountdownMode)
         }
     }
 }
+
 
 void setGameMode(int x, int y, int n, int dx, int dy, int d1x, int d1y, int dtx, int& BOARD_SIZE_X, int& BOARD_SIZE_Y, int& NumberOfMines, int& mineCountLeft, int& CountTileLeft, int& distance_x, int& distance_y, int& digit_x, int& digit_y, int& timeDigit_x)
 {
@@ -959,16 +1058,49 @@ void renderGame()
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 			TimeManager(false);
 		}
-		if (ai == true) {
-			aiTable.render(0,50);
+		if (ai == true)
+        {
+            aiTable.render(0,50);
             TimeManager(true);
-		}
+
+            if (turnTimer.isTimeUp())
+            {
+                if (isPlayerTurn) {
+                    openRandomCellForAI();
+
+                } else if (isAITurn) {
+                    openRandomCellForAI();
+
+                }
+
+                nextTurn();
+                return;
+            }
+
+            // Lượt của AI (chỉ thực hiện 1 lần trong 8s)
+            if (isAITurn && !aiThinking)
+            {
+                aiThinking = true;
+
+                // giả lập "nghĩ" 1-2 giây rồi đi
+                SDL_Delay(1000 + rand() % 1000);
+                aiMakeMove();
+                aiThinking = false;
+                nextTurn();
+            }
+
+            // Khi hết ô an toàn → so cờ
+            if (CountTileLeft == 0 && !lose && !isWinning)
+                checkFinalWinner();
+        }
 	}
+
 	playingFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 	renderButton();
 	back.render(0, 0);
 	MineManager();
 	isPlayerWinning();
+
 	GameManager();
 	SDL_RenderPresent(renderer);
 }
@@ -993,3 +1125,4 @@ void close()
 	SDL_Quit();
 
 }
+
