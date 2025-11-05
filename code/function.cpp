@@ -137,6 +137,13 @@ bool loadmedia()
 		printf("Fail");
 		success = false;
 	}
+
+	if (!aiTable.loadFromFile("duLieu/images/medium.png"))
+	{
+		printf("Fail");
+		success = false;
+	}
+	
 	//load face
 	if (!winFace.loadFromFile("duLieu/images/winface.png"))
 	{
@@ -260,7 +267,7 @@ bool loadMenuMedia()
 		printf("Fail");
 		success = false;
 	}
-	if (!aiChoiceColor.loadFromRenderedText("AI MODE", textColor))
+	if (!aiChoice.loadFromRenderedText("AI MODE", textColor))
 	{
 		printf("Fail");
 		success = false;
@@ -464,7 +471,7 @@ void showModeChoice()
 				if (x > 300 && x < 300 + customChoice.getWidth() && y > 300 && y < 300 + customChoice.getHeight()) customInside = true;
 				else customInside = false;
 				if (x > 300 && x < 300 + aiChoice.getWidth() && y > 350 && y < 350 + aiChoice.getHeight()) aiInside = true;
-				else hardInside = false;
+				else aiInside = false;
 				if (event.type == SDL_MOUSEBUTTONDOWN)
 				{
 					if (event.button.button == SDL_BUTTON_LEFT)
@@ -524,6 +531,20 @@ void showModeChoice()
 							cus = true;
 							ai = false;
 						}
+						if (aiInside == true)
+                        {
+
+							isChoosing = false;
+							customMode = false;
+							aiMode = true;
+
+							easy = false;
+							medium = false;
+							hard = false;
+							cus = false;
+							ai = true;
+
+                        }
 					}
 				}
 				if (event.type == SDL_MOUSEMOTION)
@@ -536,8 +557,8 @@ void showModeChoice()
 					else hardChoice.render(300, 250);
 					if (customInside == true) customChoiceColor.render(300, 300);
 					else customChoice.render(300, 300);
-					if (aiInside == true) aiChoiceColor.render(300, 300);
-					else aiChoice.render(300, 300);
+					if (aiInside == true) aiChoiceColor.render(300, 350);
+					else aiChoice.render(300, 350);
 				}
 			}
 			SDL_RenderPresent(renderer);
@@ -642,6 +663,16 @@ void CustomMode()
 	mInput.free();
 }
 
+void AiMode()
+{
+
+    isRunning = true;
+    turnTimer.startCountdown(8000);
+    SDL_SetWindowSize(window, 488, 630);
+    setGameMode(16, 16, 40, 21, 163, 25, 80, 430, BOARD_SIZE_X, BOARD_SIZE_Y, NumberOfMines, mineCountLeft, CountTileLeft, distance_x, distance_y, digit_x, digit_y, timeDigit_x);
+    CreateBoard();
+    
+}
 //ingame func
 void handleEvent()
 {
@@ -895,7 +926,7 @@ void renderGame()
 		winMusic = NULL;
 		loseMusic = NULL;
 	}
-	if (easy == true || medium == true || hard == true || cus == true)
+	if (easy == true || medium == true || hard == true || cus == true || ai == true)
 	{
 		if (easy == true)
 		{
@@ -914,6 +945,7 @@ void renderGame()
 			//SDL_RenderClear(renderer);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
 		}
+		if (ai == true) {}
 	}
 	playingFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 	renderButton();

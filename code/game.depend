@@ -59,7 +59,7 @@
 	"Variables.h"
 	<iostream>
 
-1759992534 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\buttons.cpp
+1760585196 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\buttons.cpp
 	"Variables.h"
 	"constant.h"
 	"Buttons.h"
@@ -94,7 +94,7 @@
 1759986651 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.h
 	<SDL.h>
 
-1760575948 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.cpp
+1760585729 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.cpp
 	"Texture.h"
 	"Variables.h"
 	"constant.h"
@@ -117,7 +117,7 @@
 1759986651 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.cpp
 	"Timer.h"
 
-1760575204 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.cpp
+1760576132 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.cpp
 	"Variables.h"
 	<iostream>
 

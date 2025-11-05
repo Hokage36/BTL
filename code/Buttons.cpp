@@ -93,6 +93,7 @@ void LButton::handleEventBack(SDL_Event* e)
 				medium = false;
 				hard = false;
 				cus = false;
+				ai = false;
 			}
 		}
 	}
