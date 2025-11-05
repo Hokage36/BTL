@@ -3,6 +3,8 @@
 #include "Variables.h"
 #include "constant.h"
 #include "function.h"
+//#include "AI.h"
+
 using namespace std;
 
 
@@ -27,6 +29,7 @@ int main(int argc, char* argv[])
 						showModeChoice();
 					}
 					if(customMode) CustomMode();
+					if(aiMode) AiMode();
 					while (isRunning)
 					{
 						handleEvent();
