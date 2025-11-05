@@ -8,6 +8,8 @@ LTimer::LTimer()
 	mPausedTicks = 0;
 	mPaused = false;
 	mStarted = false;
+
+	mCountdownDuration = 0;
 }
 void LTimer::start()
 {
@@ -83,4 +85,27 @@ bool LTimer::isPaused()
 {
 	//Timer is running and paused
 	return mPaused && mStarted;
+}
+
+void LTimer::startCountdown(unsigned int countdownMs)
+{
+    mCountdownDuration = countdownMs;
+    start(); // dùng lại hàm start có sẵn
+}
+
+unsigned int LTimer::getRemainingTime()
+{
+    if (!mStarted)
+        return 0;
+
+    unsigned int elapsed = getTicks(); // đã trôi qua bao nhiêu ms
+    if (elapsed >= mCountdownDuration)
+        return 0; // hết giờ
+
+    return mCountdownDuration - elapsed;
+}
+
+bool LTimer::isTimeUp()
+{
+    return mStarted && (getTicks() >= mCountdownDuration);
 }
