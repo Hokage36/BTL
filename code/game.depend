@@ -65,7 +65,7 @@
 	"Buttons.h"
 	"function.h"
 
-1760575503 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.h
+1762323571 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.h
 	"Texture.h"
 	"constant.h"
 	"Buttons.h"
@@ -87,11 +87,12 @@
 	"Timer.h"
 	<SDL.h>
 
-1759988704 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.h
+1762323506 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.h
 	"Timer.h"
+	"AI.h"
 	<SDL.h>
 
-1759986651 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.h
+1762323030 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.h
 	<SDL.h>
 
 1760585729 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.cpp

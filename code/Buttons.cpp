@@ -2,6 +2,7 @@
 #include "constant.h"
 #include "Buttons.h"
 #include "function.h"
+#include "Timer.h"
 
 LButton::LButton()
 {
@@ -175,10 +176,10 @@ void LButton::handleEvent(SDL_Event* e)
 
         if (ai == true)
         {
-            //Nếu không phải lượt người chơi thì bỏ qua
+            //Nếu không phải lượt người chơi → bỏ qua
             if (!isPlayerTurn) return;
 
-            //Nếu người chơi đã hành động trong lượt này thì bỏ qua
+            //Nếu người chơi đã hành động trong lượt này → bỏ qua
             if (playerHasMoved) return;
         }
 		//Mouse is inside button
@@ -202,8 +203,19 @@ void LButton::handleEvent(SDL_Event* e)
                         }
                         if (sBoard[i][j] == 9)
                         {
-                            lose = true;
-                            Mix_PlayMusic(loseMusic, 1);
+                            if (ai == true)
+                            {
+                                // Người chơi mở bom → AI thắng
+                                lose = true;          // người chơi thua
+                                Mix_PlayMusic(loseMusic, 1);
+                                revealAll = true;
+                            }
+                            else
+                            {
+                                // Chế độ solo bình thường
+                                lose = true;
+                                Mix_PlayMusic(loseMusic, 1);
+                            }
                         }
                         else
                         {

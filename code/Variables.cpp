@@ -102,6 +102,6 @@ extern int playerFlags = 0;
 extern int aiFlags = 0;
 extern bool playerHasMoved = false;  // đánh dấu người chơi đã hành động trong lượt chưa
 
-
+extern bool revealAll = false;
 
 
