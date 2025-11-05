@@ -143,7 +143,7 @@ bool loadmedia()
 		printf("Fail");
 		success = false;
 	}
-	
+
 	//load face
 	if (!winFace.loadFromFile("duLieu/images/winface.png"))
 	{
@@ -841,28 +841,38 @@ void MineManager()
 	}
 }
 
-void TimeManager()
+void TimeManager(bool isCountdownMode)
 {
-	int n = timer.getTicks() / 1000;
-	if (n < 10)
-	{
-		for (int i = 0;i <= 9;i++)
-		{
-			if (i == n) Digits.render(timeDigit_x, digit_y, &Digitsprites[n]);
-		}
-	}
-	else
-	{
-		int i = 0;
-		while (n > 0)
-		{
-			int x = n % 10;
-			n /= 10;
-			Digits.render(timeDigit_x - i * 28, digit_y, &Digitsprites[x]);
-			i++;
-		}
-	}
+    int n;
 
+    if (isCountdownMode)
+        n = turnTimer.getRemainingTime() / 1000; // đếm ngược
+    else
+        n = timer.getTicks() / 1000;         // đếm tiến
+
+    if (n < 0) n = 0;
+
+
+    if (n < 10)
+    {
+        for (int i = 0; i <= 9; i++)
+        {
+            if (i == n)
+                Digits.render(timeDigit_x, digit_y, &Digitsprites[n]);
+        }
+    }
+    else
+    {
+
+        int i = 0;
+        while (n > 0)
+        {
+            int x = n % 10;
+            n /= 10;
+            Digits.render(timeDigit_x - i * 28, digit_y, &Digitsprites[x]);
+            i++;
+        }
+    }
 }
 
 void setGameMode(int x, int y, int n, int dx, int dy, int d1x, int d1y, int dtx, int& BOARD_SIZE_X, int& BOARD_SIZE_Y, int& NumberOfMines, int& mineCountLeft, int& CountTileLeft, int& distance_x, int& distance_y, int& digit_x, int& digit_y, int& timeDigit_x)
@@ -931,28 +941,34 @@ void renderGame()
 		if (easy == true)
 		{
 			easyTable.render(0, 50);
+			TimeManager(false);
 		}
 		if (medium == true)
 		{
 			mediumTable.render(0, 50);
+			TimeManager(false);
 		}
 		if (hard == true)
 		{
 			hardTable.render(0, 50);
+			TimeManager(false);
 		}
 		if (cus == true)
 		{
 			//SDL_RenderClear(renderer);
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+			TimeManager(false);
 		}
-		if (ai == true) {}
+		if (ai == true) {
+			aiTable.render(0,50);
+            TimeManager(true);
+		}
 	}
 	playingFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 	renderButton();
 	back.render(0, 0);
 	MineManager();
 	isPlayerWinning();
-	TimeManager();
 	GameManager();
 	SDL_RenderPresent(renderer);
 }
