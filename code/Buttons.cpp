@@ -173,6 +173,14 @@ void LButton::handleEvent(SDL_Event* e)
 			inside = false;
 		}
 
+        if (ai == true)
+        {
+            //Nếu không phải lượt người chơi thì bỏ qua
+            if (!isPlayerTurn) return;
+
+            //Nếu người chơi đã hành động trong lượt này thì bỏ qua
+            if (playerHasMoved) return;
+        }
 		//Mouse is inside button
 		if (inside)
 		{
@@ -216,7 +224,15 @@ void LButton::handleEvent(SDL_Event* e)
                         {
                             Mix_PlayChannel(-1, click, 0);
                         }
+
                     }
+
+                    if (ai == true && isPlayerTurn)
+                    {
+                        playerHasMoved = true; // người chơi đã hành động
+                        nextTurn();            // chuyển lượt sang AI
+                    }
+
                     break;
                 }
 
@@ -235,6 +251,12 @@ void LButton::handleEvent(SDL_Event* e)
 							sBoard[i][j] = 11;
 							mineCountLeft--;
 						}
+
+						if (ai == true && isPlayerTurn)
+                        {
+                            playerHasMoved = true;
+                            nextTurn();
+                        }
 					}
 					else break;
 					break;
