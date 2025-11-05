@@ -1056,6 +1056,88 @@ void renderButton()
 	}
 }
 
+bool aiMakeMoveSmart()
+{
+    std::vector<std::pair<int, int>> safe, bombs, chord;
+
+    for (int i = 0; i < BOARD_SIZE_X; ++i) {
+        for (int j = 0; j < BOARD_SIZE_Y; ++j) {
+            int val = sBoard[i][j];
+            if (val < 1 || val > 8) continue;
+
+            int flag = 0, hidden = 0;
+            std::vector<std::pair<int, int>> hiddenCells;
+
+            for (int dx = -1; dx <= 1; ++dx)
+                for (int dy = -1; dy <= 1; ++dy) {
+                    int x = i + dx, y = j + dy;
+                    if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
+                    if (sBoard[x][y] == 11) flag++;
+                    else if (sBoard[x][y] == 10) {
+                        hidden++;
+                        hiddenCells.push_back({x, y});
+                    }
+                }
+
+            if (hidden == 0) continue;
+
+            if (flag == val) // tất cả hidden quanh ô này là an toàn
+                safe.insert(safe.end(), hiddenCells.begin(), hiddenCells.end());
+            else if (flag + hidden == val) // tất cả hidden là bom
+                bombs.insert(bombs.end(), hiddenCells.begin(), hiddenCells.end());
+            else if (flag == val && hidden > 0)
+                chord.push_back({i, j}); // đủ cờ rồi mở xung quanh
+        }
+    }
+
+    auto revealCell = [&](int x, int y) -> bool {
+        reveal(x, y);
+        if (board[x][y] == 9) return true;
+        Mix_PlayChannel(-1, click, 0);
+        return false;
+    };
+
+    // Ưu tiên mở các ô “safe” suy luận được
+    if (!safe.empty()) {
+        auto [x, y] = safe[rand() % safe.size()];
+        return revealCell(x, y);
+    }
+
+    // Nếu không có safe thì thử "chording" quanh ô đủ cờ
+    if (!chord.empty()) {
+        auto [cx, cy] = chord[rand() % chord.size()];
+        for (int dx = -1; dx <= 1; ++dx)
+            for (int dy = -1; dy <= 1; ++dy) {
+                int x = cx + dx, y = cy + dy;
+                if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
+                if (sBoard[x][y] == 10) {
+                    if (revealCell(x, y)) return true; // trúng bom => dừng luôn
+                }
+            }
+        return false;
+    }
+
+    // Đặt cờ nếu chắc chắn là bom
+    if (!bombs.empty() && mineCountLeft > 0) {
+        auto [x, y] = bombs[rand() % bombs.size()];
+        sBoard[x][y] = 11;
+        mineCountLeft--;
+        Mix_PlayChannel(-1, click, 0);
+        return false;
+    }
+
+    // chọn ngẫu nhiên 1 ô chưa mở
+    int x, y;
+    do {
+        x = rand() % BOARD_SIZE_X;
+        y = rand() % BOARD_SIZE_Y;
+    } while (sBoard[x][y] != 10);
+
+    return revealCell(x, y);
+}
+
+
+
 void renderGame()
 {
 	if (mute == false)
@@ -1128,8 +1210,19 @@ void renderGame()
                 // Nếu AI đang suy nghĩ và đã đủ 3 giây → AI đi
                 else if (SDL_GetTicks() - aiStartTime >= 3000)
                 {
-                    aiMakeMove();
+                    bool aiHitMine = aiMakeMoveSmart();
                     aiThinking = false;
+
+                    if (aiHitMine) { // AI chọn bom
+                        isWinning = true;
+                        revealAll = true;
+                        Mix_PlayMusic(winMusic, 1);
+                        winFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
+                        turnTimer.pause();
+                        isRunning = false;
+                        return;
+                    }
+
                     nextTurn(); // Kết thúc lượt AI
                     return;
                 }
