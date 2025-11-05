@@ -45,6 +45,12 @@ bool init()
 		}
 		else
 		{
+		    SDL_Surface* iconSurf = IMG_Load("duLieu/images/minesweeper-icon.jpg");
+            if (iconSurf) {
+                SDL_SetWindowIcon(window, iconSurf);
+                SDL_FreeSurface(iconSurf);
+            }
+
 			//Create vsynced renderer for window
 			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 			if (renderer == NULL)
@@ -708,7 +714,7 @@ void nextTurn()
     turnTimer.startCountdown(8000);
 }
 
-void openRandomCellForAI()
+void openRandomCell()
 {
     int x, y;
     do {
@@ -744,42 +750,6 @@ void checkFinalWinner()
     }
 }
 
-void aiMakeMove()
-{
-
-
-    int x, y;
-    do {
-        x = rand() % BOARD_SIZE_X;
-        y = rand() % BOARD_SIZE_Y;
-    } while (sBoard[x][y] != 10);
-
-    reveal(x, y);
-
-    if (board[x][y] == 9)
-    {
-        isWinning = true;
-        Mix_PlayMusic(winMusic, 1);  
-
-        // Hiển thị mặt cười
-        winFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
-
-        revealAll = true; // báo hiệu cần lật toàn bộ bàn
-
-        turnTimer.pause();
-
-        // Ngừng cho AI đi tiếp
-        isAITurn = false;
-        isPlayerTurn = false;
-        aiThinking = false;
-
-        return;
-    }
-
-    Mix_PlayChannel(-1, click, 0);
-}
-
-
 //ingame func
 void handleEvent()
 {
@@ -790,6 +760,7 @@ void handleEvent()
 			{
 				isRunning = false;
 				mainLoop = false;
+				return;
 			}
 			face.handleEventAgain(&e);
 			goBack.handleEventBack(&e);
@@ -897,11 +868,6 @@ void isPlayerWinning()
 	if (CountTileLeft == NumberOfMines) isWinning = true;
 }
 
-/*void isPlayerWinningWithAi()
-{
-    if()
-}*/
-//viet lai quan ly choi voi ai
 void GameManager()
 {
 
@@ -1062,9 +1028,9 @@ void renderButton()
 
 bool aiMakeMoveSmart()
 {
-    std::vector<std::pair<int,int>> safeCells;    // ô chắc chắn an toàn
-    std::vector<std::pair<int,int>> bombCells;    // ô chắc chắn là bom
-    std::vector<std::pair<int,int>> chordCells;   // ô có thể chord
+    vector<std::pair<int,int>> safeCells;    // ô chắc chắn an toàn
+    vector<std::pair<int,int>> bombCells;    // ô chắc chắn là bom
+    vector<std::pair<int,int>> chordCells;   // ô có thể chord
 
     for (int i = 0; i < BOARD_SIZE_X; ++i)
     {
@@ -1075,7 +1041,7 @@ bool aiMakeMoveSmart()
             if (val < 1 || val > 8) continue; // chỉ phân tích ô đã mở có số
 
             int flag = 0, hidden = 0;
-            std::vector<std::pair<int,int>> hiddenList;
+            vector<std::pair<int,int>> hiddenList;
 
             // đếm số cờ & ô ẩn xung quanh
             for (int dx = -1; dx <= 1; dx++)
@@ -1085,7 +1051,7 @@ bool aiMakeMoveSmart()
                 int y = j + dy;
                 if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
 
-                if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++; 
+                if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++;
                 else if (sBoard[x][y] == 10) {
                     hidden++;
                     hiddenList.push_back({x,y});
@@ -1094,7 +1060,7 @@ bool aiMakeMoveSmart()
 
             if (hidden == 0) continue;
 
-            // quy tắc 1: đủ cờ, các ô chưa mở an toàn 
+            // quy tắc 1: đủ cờ, các ô chưa mở an toàn
             if (flag == val)
                 safeCells.insert(safeCells.end(), hiddenList.begin(), hiddenList.end());
 
@@ -1109,14 +1075,6 @@ bool aiMakeMoveSmart()
     }
 
 
-    //Mở các ô an toàn trước
-    if (!safeCells.empty())
-    {
-        auto [x, y] = safeCells[rand() % safeCells.size()];
-        bool hitBomb = revealUsingLogic(x, y);
-        return hitBomb;
-    }
-
     //Mở các ô xung quanh nếu cờ = số trên ô
     if (!chordCells.empty())
     {
@@ -1128,6 +1086,15 @@ bool aiMakeMoveSmart()
         Mix_PlayChannel(-1, click, 0);
         return false;
     }
+
+    //Mở các ô an toàn trước
+    if (!safeCells.empty())
+    {
+        auto [x, y] = safeCells[rand() % safeCells.size()];
+        bool hitBomb = revealUsingLogic(x, y);
+        return hitBomb;
+    }
+
 
     // Đặt cờ
     if (!bombCells.empty() && mineCountLeft > 0)
@@ -1217,7 +1184,7 @@ void renderGame()
             TimeManager(true);
 
             if (turnTimer.isTimeUp()) {
-                if (isPlayerTurn) openRandomCellForAI();
+                if (isPlayerTurn) openRandomCell();
                 nextTurn();
                 return;
             }
@@ -1228,7 +1195,7 @@ void renderGame()
                 if (!aiThinking)
                 {
                     aiThinking = true;
-                    aiStartTime = SDL_GetTicks(); 
+                    aiStartTime = SDL_GetTicks();
                 }
 
                 // Nếu AI đang suy nghĩ và đã đủ 3 giây → AI đi
@@ -1262,7 +1229,6 @@ void renderGame()
 	renderButton();
 	back.render(0, 0);
 	MineManager();
-
 
 	GameManager();
 	SDL_RenderPresent(renderer);

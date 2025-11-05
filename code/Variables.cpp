@@ -108,3 +108,4 @@ extern bool playerHasMoved = false;  // đánh dấu người chơi đã hành �
 extern bool revealAll = false;
 
 
+

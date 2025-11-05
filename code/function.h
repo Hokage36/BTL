@@ -35,7 +35,6 @@ void reveal(int i, int j);
 void renderGame();
 
 void nextTurn();
-void openRandomCellForAI();
+void openRandomCell();
 void checkFinalWinner();
-void aiMakeMove();
 bool aiMakeMoveSmart();
