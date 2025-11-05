@@ -38,4 +38,4 @@ void nextTurn();
 void openRandomCellForAI();
 void checkFinalWinner();
 void aiMakeMove();
-void aiMakeMoveSmart();
+bool aiMakeMoveSmart();

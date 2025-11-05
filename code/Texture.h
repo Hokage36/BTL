@@ -37,6 +37,8 @@ public:
 	//Gets image dimensions
 	int getWidth();
 	int getHeight();
+    void renderScaled(int x, int y, int w, int h);
+
 
 private:
 	//The actual hardware texture

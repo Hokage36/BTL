@@ -176,13 +176,13 @@ void LButton::handleEvent(SDL_Event* e)
 
         if (ai == true)
         {
-            //Nếu không phải lượt người chơi → bỏ qua
+            //Nếu không phải lượt người chơi -> bỏ qua
             if (!isPlayerTurn) return;
 
-            //Nếu người chơi đã hành động trong lượt này → bỏ qua
+            //Nếu người chơi đã hành động trong lượt này -> bỏ qua
             if (playerHasMoved) return;
         }
-		//Mouse is inside button
+		
 		if (inside)
 		{
 			if (e->type == SDL_MOUSEBUTTONDOWN)
@@ -205,7 +205,7 @@ void LButton::handleEvent(SDL_Event* e)
                         {
                             if (ai == true)
                             {
-                                // Người chơi mở bom → AI thắng
+                                // Người chơi mở bom 
                                 lose = true;          // người chơi thua
                                 Mix_PlayMusic(loseMusic, 1);
                                 revealAll = true;
@@ -281,11 +281,16 @@ void LButton::handleEvent(SDL_Event* e)
 
 void LButton::render(int i, int j)
 {
-	//Show current button sprite
-	Tiles_image.render(mPosition.x, mPosition.y, &Tilesprites[sBoard[i][j]]);
+	if (sBoard[i][j] == 12)
+    {
+        Flag_image.renderScaled(mPosition.x, mPosition.y, TILE_SIZE, TILE_SIZE);
+    }
+    else
+    {
+        Tiles_image.render(mPosition.x, mPosition.y, &Tilesprites[sBoard[i][j]]);
+    }
 }
 void LButton::loseRender(int i, int j)
 {
-	//Show all button sprite
 	Tiles_image.render(mPosition.x, mPosition.y, &Tilesprites[board[i][j]]);
 }

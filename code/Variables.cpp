@@ -62,7 +62,10 @@ extern std::vector <std::vector<int> > board(3, std::vector<int>(2, 0));
 
 // Tiles in board
 extern LTexture Tiles_image(NULL, 0, 0);
-extern SDL_Rect Tilesprites[12] = {};
+extern LTexture Flag_image(NULL, 0, 0);
+extern SDL_Rect Tilesprites[13] = {};
+extern SDL_Rect Flag_sprite = {};
+
 
 // audio
 extern bool mute = false;

@@ -96,7 +96,7 @@ bool loadmedia()
 	else
 	{
 		//Set sprites
-		for (int i = 0;i < 12;++i)
+		for (int i = 0;i < 13;++i)
 		{
 			Tilesprites[i].x = i * TILE_SIZE;
 			Tilesprites[i].y = 0;
@@ -121,6 +121,13 @@ bool loadmedia()
 			Digitsprites[i].h = 46;
 		}
 	}
+
+	if (!Flag_image.loadFromFile("duLieu/images/flag.png"))
+	{
+		printf("Fail");
+		success = false;
+	}
+
 	//load easy table
 	if (!easyTable.loadFromFile("duLieu/images/easy.png"))
 	{
@@ -725,7 +732,7 @@ void checkFinalWinner()
         if (board[i][j] == 9) { // bom thật
             if (sBoard[i][j] == 11)
                 playerFlags++;
-            if (sBoard[i][j] == 11)
+            if (sBoard[i][j] == 12)
                 aiFlags++;
         }
     }
@@ -749,18 +756,16 @@ void aiMakeMove()
 
     reveal(x, y);
 
-    // Nếu AI chọn trúng bom -> người chơi thắng
     if (board[x][y] == 9)
     {
         isWinning = true;
-        Mix_PlayMusic(winMusic, 1);  // phát nhạc thắng
+        Mix_PlayMusic(winMusic, 1);  
 
         // Hiển thị mặt cười
         winFace.render(BOARD_SIZE_X * TILE_SIZE / 2, digit_y);
 
         revealAll = true; // báo hiệu cần lật toàn bộ bàn
 
-        // Dừng đếm giờ
         turnTimer.pause();
 
         // Ngừng cho AI đi tiếp
@@ -771,7 +776,6 @@ void aiMakeMove()
         return;
     }
 
-    // Nếu không trúng bom thì phát âm click
     Mix_PlayChannel(-1, click, 0);
 }
 
@@ -814,9 +818,9 @@ void handleEvent()
 
 void reveal(int i, int j)
 {
-	if (sBoard[i][j] == 10 || sBoard[i][j] == 11)
+	if (sBoard[i][j] == 10 || sBoard[i][j] == 11 || sBoard[i][j] == 12)
 	{
-		if (sBoard[i][j] == 11)
+		if (sBoard[i][j] == 11 || sBoard[i][j] == 12)
 		{
 			return;
 		}
@@ -853,7 +857,7 @@ void chordOpen(int i, int j)
                 int nx = i + x;
                 int ny = j + y;
                 if (nx < 0 || nx >= BOARD_SIZE_X || ny < 0 || ny >= BOARD_SIZE_Y) continue;
-                if (sBoard[nx][ny] == 11) flagCount++;
+                if (sBoard[nx][ny] == 11 || sBoard[nx][ny] == 12) flagCount++;
             }
         }
 
@@ -1072,7 +1076,7 @@ bool aiMakeMoveSmart()
                 for (int dy = -1; dy <= 1; ++dy) {
                     int x = i + dx, y = j + dy;
                     if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
-                    if (sBoard[x][y] == 11) flag++;
+                    if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++;
                     else if (sBoard[x][y] == 10) {
                         hidden++;
                         hiddenCells.push_back({x, y});
@@ -1081,12 +1085,12 @@ bool aiMakeMoveSmart()
 
             if (hidden == 0) continue;
 
-            if (flag == val) // tất cả hidden quanh ô này là an toàn
+            if (flag == val) // tất cả quanh ô này là an toàn
                 safe.insert(safe.end(), hiddenCells.begin(), hiddenCells.end());
-            else if (flag + hidden == val) // tất cả hidden là bom
+            else if (flag + hidden == val) // tất cả ô quanh là bom
                 bombs.insert(bombs.end(), hiddenCells.begin(), hiddenCells.end());
             else if (flag == val && hidden > 0)
-                chord.push_back({i, j}); // đủ cờ rồi mở xung quanh
+                chord.push_back({i, j}); // đủ cờ rồi => có thể chord
         }
     }
 
@@ -1097,13 +1101,12 @@ bool aiMakeMoveSmart()
         return false;
     };
 
-    // Ưu tiên mở các ô “safe” suy luận được
+    // Ưu tiên mở các ô an toàn suy luận được
     if (!safe.empty()) {
         auto [x, y] = safe[rand() % safe.size()];
         return revealCell(x, y);
     }
 
-    // Nếu không có safe thì thử "chording" quanh ô đủ cờ
     if (!chord.empty()) {
         auto [cx, cy] = chord[rand() % chord.size()];
         for (int dx = -1; dx <= 1; ++dx)
@@ -1120,13 +1123,13 @@ bool aiMakeMoveSmart()
     // Đặt cờ nếu chắc chắn là bom
     if (!bombs.empty() && mineCountLeft > 0) {
         auto [x, y] = bombs[rand() % bombs.size()];
-        sBoard[x][y] = 11;
+        sBoard[x][y] = 12;
         mineCountLeft--;
         Mix_PlayChannel(-1, click, 0);
         return false;
     }
 
-    // chọn ngẫu nhiên 1 ô chưa mở
+    // Chọn ngẫu nhiên 1 ô chưa mở
     int x, y;
     do {
         x = rand() % BOARD_SIZE_X;
@@ -1204,7 +1207,7 @@ void renderGame()
                 if (!aiThinking)
                 {
                     aiThinking = true;
-                    aiStartTime = SDL_GetTicks(); // Lưu thời điểm bắt đầu
+                    aiStartTime = SDL_GetTicks(); 
                 }
 
                 // Nếu AI đang suy nghĩ và đã đủ 3 giây → AI đi
@@ -1213,7 +1216,7 @@ void renderGame()
                     bool aiHitMine = aiMakeMoveSmart();
                     aiThinking = false;
 
-                    if (aiHitMine) { // AI chọn bom
+                    if (aiHitMine) { // AI chọn trúng bom => người chơi thắng
                         isWinning = true;
                         revealAll = true;
                         Mix_PlayMusic(winMusic, 1);
@@ -1228,7 +1231,7 @@ void renderGame()
                 }
             }
 
-            // Khi hết ô an toàn → so cờ
+            // Nếu chọn hết ô an toàn, so số cờ đã đánh
             if (CountTileLeft == 0 && !lose && !isWinning)
                 checkFinalWinner();
         }
