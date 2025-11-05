@@ -121,5 +121,6 @@ extern int aiFlags;
 extern bool playerHasMoved;
 
 extern bool revealAll;
+extern bool revealUsingLogic(int x, int y);
 
 #endif

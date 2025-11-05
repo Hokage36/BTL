@@ -1062,84 +1062,105 @@ void renderButton()
 
 bool aiMakeMoveSmart()
 {
-    std::vector<std::pair<int, int>> safe, bombs, chord;
+    std::vector<std::pair<int,int>> safeCells;    // ô chắc chắn an toàn
+    std::vector<std::pair<int,int>> bombCells;    // ô chắc chắn là bom
+    std::vector<std::pair<int,int>> chordCells;   // ô có thể chord
 
-    for (int i = 0; i < BOARD_SIZE_X; ++i) {
-        for (int j = 0; j < BOARD_SIZE_Y; ++j) {
+    for (int i = 0; i < BOARD_SIZE_X; ++i)
+    {
+        for (int j = 0; j < BOARD_SIZE_Y; ++j)
+        {
             int val = sBoard[i][j];
-            if (val < 1 || val > 8) continue;
+
+            if (val < 1 || val > 8) continue; // chỉ phân tích ô đã mở có số
 
             int flag = 0, hidden = 0;
-            std::vector<std::pair<int, int>> hiddenCells;
+            std::vector<std::pair<int,int>> hiddenList;
 
-            for (int dx = -1; dx <= 1; ++dx)
-                for (int dy = -1; dy <= 1; ++dy) {
-                    int x = i + dx, y = j + dy;
-                    if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
-                    if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++;
-                    else if (sBoard[x][y] == 10) {
-                        hidden++;
-                        hiddenCells.push_back({x, y});
-                    }
+            // đếm số cờ & ô ẩn xung quanh
+            for (int dx = -1; dx <= 1; dx++)
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                int x = i + dx;
+                int y = j + dy;
+                if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
+
+                if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++; 
+                else if (sBoard[x][y] == 10) {
+                    hidden++;
+                    hiddenList.push_back({x,y});
                 }
+            }
 
             if (hidden == 0) continue;
 
-            if (flag == val) // tất cả quanh ô này là an toàn
-                safe.insert(safe.end(), hiddenCells.begin(), hiddenCells.end());
-            else if (flag + hidden == val) // tất cả ô quanh là bom
-                bombs.insert(bombs.end(), hiddenCells.begin(), hiddenCells.end());
-            else if (flag == val && hidden > 0)
-                chord.push_back({i, j}); // đủ cờ rồi => có thể chord
+            // quy tắc 1: đủ cờ, các ô chưa mở an toàn 
+            if (flag == val)
+                safeCells.insert(safeCells.end(), hiddenList.begin(), hiddenList.end());
+
+            // quy tắc 2: nếu số cờ và số ô chưa mở = số trên ô -> các ô chưa mở là bom
+            if (flag + hidden == val)
+                bombCells.insert(bombCells.end(), hiddenList.begin(), hiddenList.end());
+
+            // quy tắc 3: có thể mở các ô xung quanh khi đủ cờ
+            if (flag == val)
+                chordCells.push_back({i, j});
         }
     }
 
-    auto revealCell = [&](int x, int y) -> bool {
-        reveal(x, y);
-        if (board[x][y] == 9) return true;
+
+    //Mở các ô an toàn trước
+    if (!safeCells.empty())
+    {
+        auto [x, y] = safeCells[rand() % safeCells.size()];
+        bool hitBomb = revealUsingLogic(x, y);
+        return hitBomb;
+    }
+
+    //Mở các ô xung quanh nếu cờ = số trên ô
+    if (!chordCells.empty())
+    {
+        auto [cx, cy] = chordCells[rand() % chordCells.size()];
+        chordOpen(cx, cy);
+
+        if (lose) return true;  // AI mở trúng bom → người thắng
+
         Mix_PlayChannel(-1, click, 0);
         return false;
-    };
-
-    // Ưu tiên mở các ô an toàn suy luận được
-    if (!safe.empty()) {
-        auto [x, y] = safe[rand() % safe.size()];
-        return revealCell(x, y);
     }
 
-    if (!chord.empty()) {
-        auto [cx, cy] = chord[rand() % chord.size()];
-        for (int dx = -1; dx <= 1; ++dx)
-            for (int dy = -1; dy <= 1; ++dy) {
-                int x = cx + dx, y = cy + dy;
-                if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
-                if (sBoard[x][y] == 10) {
-                    if (revealCell(x, y)) return true; // trúng bom => dừng luôn
-                }
-            }
-        return false;
-    }
-
-    // Đặt cờ nếu chắc chắn là bom
-    if (!bombs.empty() && mineCountLeft > 0) {
-        auto [x, y] = bombs[rand() % bombs.size()];
-        sBoard[x][y] = 12;
+    // Đặt cờ
+    if (!bombCells.empty() && mineCountLeft > 0)
+    {
+        auto [x,y] = bombCells[rand() % bombCells.size()];
+        sBoard[x][y] = 12;      // đặt cờ
         mineCountLeft--;
         Mix_PlayChannel(-1, click, 0);
         return false;
     }
 
-    // Chọn ngẫu nhiên 1 ô chưa mở
+    //random
     int x, y;
     do {
         x = rand() % BOARD_SIZE_X;
         y = rand() % BOARD_SIZE_Y;
     } while (sBoard[x][y] != 10);
 
-    return revealCell(x, y);
+    return revealUsingLogic(x, y);
 }
 
 
+// Hàm Máy mở ô
+bool revealUsingLogic(int x, int y)
+{
+    reveal(x, y);
+
+    if (board[x][y] == 9)
+        return true;
+
+    Mix_PlayChannel(-1, click, 0);
+    return false;
+}
 
 void renderGame()
 {
