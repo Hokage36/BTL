@@ -104,6 +104,7 @@ extern bool ai = false;
 extern bool isPlayerTurn = true;
 extern bool isAITurn = false;
 extern bool aiThinking = false;
+extern unsigned int aiStartTime = 0;
 extern int playerFlags = 0;
 extern int aiFlags = 0;
 extern bool playerHasMoved = false;  // đánh dấu người chơi đã hành động trong lượt chưa

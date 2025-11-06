@@ -13,8 +13,6 @@ LButton goBack;
 LButton sound;
 LTimer timer;
 LTimer turnTimer;
-Uint32 aiStartTime = 0;
-
 
 //initialization func
 bool init()
@@ -733,57 +731,6 @@ void AiMode()
     aiThinking = false;
 }
 
-void nextTurn()
-{
-    if (isPlayerTurn) {
-        isPlayerTurn = false;
-        isAITurn = true;
-    } else {
-        isPlayerTurn = true;
-        isAITurn = false;
-    }
-    playerHasMoved = false;
-    aiThinking = false;
-    aiStartTime = 0;
-    turnTimer.startCountdown(8000);
-}
-
-void openRandomCell()
-{
-    int x, y;
-    do {
-        x = rand() % BOARD_SIZE_X;
-        y = rand() % BOARD_SIZE_Y;
-    } while (sBoard[x][y] != 10);
-
-    reveal(x, y);
-    if (board[x][y] == 9) {
-        lose = true;
-    }
-}
-
-void checkFinalWinner()
-{
-    int playerFlags = 0, aiFlags = 0;
-
-    for (int i = 0; i < BOARD_SIZE_X; ++i)
-    for (int j = 0; j < BOARD_SIZE_Y; ++j)
-    {
-        if (board[i][j] == 9) { // bom thật
-            if (sBoard[i][j] == 11)
-                playerFlags++;
-            if (sBoard[i][j] == 12)
-                aiFlags++;
-        }
-    }
-
-    if (playerFlags > aiFlags) {
-        isWinning = true;
-    } else if (aiFlags > playerFlags) {
-        lose = true;
-    }
-}
-
 //ingame func
 void handleEvent()
 {
@@ -818,8 +765,6 @@ void handleEvent()
 
 		}
 }
-
-
 
 void reveal(int i, int j)
 {
@@ -1056,6 +1001,57 @@ void renderButton()
 	}
 }
 
+void nextTurn()
+{
+    if (isPlayerTurn) {
+        isPlayerTurn = false;
+        isAITurn = true;
+    } else {
+        isPlayerTurn = true;
+        isAITurn = false;
+    }
+    playerHasMoved = false;
+    aiThinking = false;
+    aiStartTime = 0;
+    turnTimer.startCountdown(8000);
+}
+
+void openRandomCell()
+{
+    int x, y;
+    do {
+        x = rand() % BOARD_SIZE_X;
+        y = rand() % BOARD_SIZE_Y;
+    } while (sBoard[x][y] != 10);
+
+    reveal(x, y);
+    if (board[x][y] == 9) {
+        lose = true;
+    }
+}
+
+void checkFinalWinner()
+{
+    int playerFlags = 0, aiFlags = 0;
+
+    for (int i = 0; i < BOARD_SIZE_X; ++i)
+    for (int j = 0; j < BOARD_SIZE_Y; ++j)
+    {
+        if (board[i][j] == 9) { // bom thật
+            if (sBoard[i][j] == 11)
+                playerFlags++;
+            if (sBoard[i][j] == 12)
+                aiFlags++;
+        }
+    }
+
+    if (playerFlags > aiFlags) {
+        isWinning = true;
+    } else if (aiFlags > playerFlags) {
+        lose = true;
+    }
+}
+
 bool aiMakeMoveSmart()
 {
     vector<std::pair<int,int>> safeCells;    // ô chắc chắn an toàn
@@ -1081,7 +1077,7 @@ bool aiMakeMoveSmart()
                 int y = j + dy;
                 if (x < 0 || y < 0 || x >= BOARD_SIZE_X || y >= BOARD_SIZE_Y) continue;
 
-                if (sBoard[x][y] == 11 || sBoard[x][y] == 12) flag++;
+                if (sBoard[x][y] == 12 || sBoard[x][y] == 11) flag++;
                 else if (sBoard[x][y] == 10) {
                     hidden++;
                     hiddenList.push_back({x,y});
@@ -1143,7 +1139,6 @@ bool aiMakeMoveSmart()
 
     return revealUsingLogic(x, y);
 }
-
 
 // Hàm Máy mở ô
 bool revealUsingLogic(int x, int y)
