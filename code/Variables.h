@@ -119,6 +119,7 @@ extern bool ai;
 extern bool isPlayerTurn;
 extern bool isAITurn;
 extern bool aiThinking;
+extern unsigned int aiStartTime;
 extern int playerFlags;
 extern int aiFlags;
 extern bool playerHasMoved;
