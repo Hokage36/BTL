@@ -33,6 +33,9 @@ extern LTexture mediumTable;
 extern LTexture hardTable;
 extern LTexture customStart;
 extern LTexture aiTable;
+extern LTexture gameTitle;
+extern LTexture titleIconLeft;
+extern LTexture titleIconRight;
 
 extern LTexture back;
 extern LTexture sound_on;

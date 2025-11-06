@@ -124,6 +124,12 @@ void LTexture::render(int x, int y, SDL_Rect* clip)
 	SDL_RenderCopy(renderer, mTexture, clip, &renderQuad);
 }
 
+void LTexture::renderScaled(int x, int y, int w, int h)
+{
+    SDL_Rect renderQuad = { x, y, w, h };
+    SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
+}
+
 int LTexture::getWidth()
 {
 	return mWidth;
@@ -134,9 +140,5 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-void LTexture::renderScaled(int x, int y, int w, int h)
-{
-    SDL_Rect renderQuad = { x, y, w, h };
-    SDL_RenderCopy(renderer, mTexture, NULL, &renderQuad);
-}
+
 

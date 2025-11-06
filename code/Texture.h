@@ -39,7 +39,6 @@ public:
 	int getHeight();
     void renderScaled(int x, int y, int w, int h);
 
-
 private:
 	//The actual hardware texture
 	SDL_Texture* mTexture;

@@ -22,6 +22,7 @@ bool init()
 	//Initialization flag
 	bool success = true;
 
+	SDL_setenv("SDL_AUDIODRIVER", "directsound", 1);
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -262,6 +263,25 @@ bool loadMenuMedia()
 	}
 	//load choice text
 	SDL_Color textColor = { 255,255,255 };
+
+	if (!gameTitle.loadFromRenderedText("MINESWEEPER!!!", textColor))
+    {
+        printf("Fail load title text!");
+        success = false;
+    }
+
+    if (!titleIconLeft.loadFromFile("duLieu/images/bomb.png"))
+    {
+        printf("Fail load left icon!");
+        success = false;
+    }
+
+    if (!titleIconRight.loadFromFile("duLieu/images/bomb.png"))
+    {
+        printf("Fail load right icon!");
+        success = false;
+    }
+
 	if (!easyChoice.loadFromRenderedText("EASY MODE", textColor))
 	{
 		printf("Fail");
@@ -375,8 +395,6 @@ void setButtonPosition()
 	}
 }
 
-// viet lai
-
 void createMenu()
 {
 	menuTheme.render(0, 0);
@@ -388,6 +406,22 @@ void createMenu()
 void createModeMenu()
 {
 	levelTheme.render(0, 0);
+
+    int padding = 20;
+    int y = 90;
+
+    int h = gameTitle.getHeight();
+    float scale = (float)h / titleIconLeft.getHeight();
+    int w = titleIconLeft.getWidth() * scale;
+
+    int titleX = (SCREEN_WIDTH - gameTitle.getWidth()) / 2;
+    int leftX  = titleX - w - padding;
+    int rightX = titleX + gameTitle.getWidth() + padding;
+
+    titleIconLeft.renderScaled(leftX,  y, w, h);
+    gameTitle.render(titleX, y);
+    titleIconRight.renderScaled(rightX, y, w, h);
+
 	easyChoice.render(300, 150);
 	mediumChoice.render(300, 200);
 	hardChoice.render(300, 250);
@@ -768,10 +802,10 @@ void handleEvent()
 
 			if (ai == true)
             {
-                if (!isPlayerTurn) continue;    // nếu không phải lượt người -> bỏ qua xử lý ô (nhưng không return)
+                if (!isPlayerTurn) continue;
                 if (playerHasMoved) continue;   // nếu người đã đi -> bỏ qua
             }
-			//viet lai
+
 			for (int i = 0; i < BOARD_SIZE_X; i++)
 			{
 				for (int j = 0; j < BOARD_SIZE_Y; j++)
@@ -820,7 +854,6 @@ void chordOpen(int i, int j)
     {
         int flagCount = 0;
 
-
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
@@ -832,7 +865,6 @@ void chordOpen(int i, int j)
             }
         }
 
-
         if (flagCount == sBoard[i][j])
         {
             for (int x = -1; x <= 1; x++)
@@ -843,7 +875,6 @@ void chordOpen(int i, int j)
                     int ny = j + y;
                     if (nx < 0 || nx >= BOARD_SIZE_X || ny < 0 || ny >= BOARD_SIZE_Y) continue;
 
-
                     if (sBoard[nx][ny] == 10)
                     {
 
@@ -852,7 +883,6 @@ void chordOpen(int i, int j)
                             lose = true;
                             return;
                         }
-
 
                         reveal(nx, ny);
                     }
@@ -955,7 +985,7 @@ void TimeManager(bool isCountdownMode)
     int n;
 
     if (isCountdownMode)
-        n = turnTimer.getRemainingTime() / 1000; // đếm ngược
+        n = (turnTimer.getRemainingTime() + 999) / 1000; // đếm ngược
     else
         n = timer.getTicks() / 1000;         // đếm tiến
 
@@ -1074,7 +1104,6 @@ bool aiMakeMoveSmart()
         }
     }
 
-
     //Mở các ô xung quanh nếu cờ = số trên ô
     if (!chordCells.empty())
     {
@@ -1094,7 +1123,6 @@ bool aiMakeMoveSmart()
         bool hitBomb = revealUsingLogic(x, y);
         return hitBomb;
     }
-
 
     // Đặt cờ
     if (!bombCells.empty() && mineCountLeft > 0)
@@ -1247,6 +1275,9 @@ void close()
 	SDL_DestroyWindow(window);
 	window = NULL;
 	renderer = NULL;
+
+	Mix_CloseAudio();
+    Mix_Quit();
 
 	//Quit SDL subsystems
 	TTF_Quit();

@@ -65,12 +65,12 @@
 	"Buttons.h"
 	"function.h"
 
-1762323571 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.h
+1762374177 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.h
 	"Texture.h"
 	"constant.h"
 	"Buttons.h"
 
-1759986651 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\texture.h
+1762374146 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\texture.h
 	<iostream>
 	<time.h>
 	<SDL.h>
@@ -80,10 +80,10 @@
 	<string>
 	<vector>
 
-1759986651 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\constant.h
+1762374069 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\constant.h
 	<iostream>
 
-1760570733 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\buttons.h
+1762374121 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\buttons.h
 	"Timer.h"
 	<SDL.h>
 
@@ -92,7 +92,7 @@
 	"AI.h"
 	<SDL.h>
 
-1762323030 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.h
+1762365266 c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.h
 	<SDL.h>
 
 1760585729 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\function.cpp
@@ -111,14 +111,14 @@
 	"constant.h"
 	"function.h"
 
-1759986651 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\texture.cpp
+1762374137 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\texture.cpp
 	"Texture.h"
 	"Variables.h"
 
-1759986651 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.cpp
+1762365248 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\timer.cpp
 	"Timer.h"
 
-1760576132 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.cpp
+1762374170 source:c:\users\xuans\onedrive\taÌi liêòu\github\btl\code\variables.cpp
 	"Variables.h"
 	<iostream>
 

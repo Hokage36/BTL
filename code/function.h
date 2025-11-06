@@ -1,7 +1,6 @@
 #pragma once
 #pragma once
 #include "Timer.h"
-#include "AI.h"
 #include <SDL.h>
 //initialization func
 bool init();

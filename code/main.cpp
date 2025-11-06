@@ -3,7 +3,6 @@
 #include "Variables.h"
 #include "constant.h"
 #include "function.h"
-//#include "AI.h"
 
 using namespace std;
 

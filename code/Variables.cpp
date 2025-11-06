@@ -23,6 +23,9 @@ extern LTexture easyTable(NULL, 0, 0);
 extern LTexture mediumTable(NULL, 0, 0);
 extern LTexture hardTable(NULL, 0, 0);
 extern LTexture aiTable(NULL, 0, 0);
+extern LTexture gameTitle(NULL, 0, 0);
+extern LTexture titleIconLeft(NULL, 0, 0);
+extern LTexture titleIconRight(NULL, 0, 0);
 
 extern LTexture customStart(NULL, 0, 0);
 extern LTexture back(NULL, 0, 0);
